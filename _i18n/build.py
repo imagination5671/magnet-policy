@@ -9,6 +9,8 @@ LANGS = [("ko", "한국어"), ("en", "English"), ("ja", "日本語"), ("zh-Hant"
 TITLE = {
     "privacy": {"ko": "Magnet 개인정보처리방침", "en": "Magnet Privacy Policy", "ja": "Magnet プライバシーポリシー",
                 "zh-Hant": "Magnet 隱私權政策", "es": "Magnet Política de privacidad"},
+    "delete": {"ko": "Magnet 계정 삭제 안내", "en": "Delete your Magnet account", "ja": "Magnet アカウント削除",
+               "zh-Hant": "Magnet 刪除帳號", "es": "Eliminar cuenta de Magnet"},
     "terms": {"ko": "Magnet 이용약관", "en": "Magnet Terms of Use", "ja": "Magnet 利用規約",
               "zh-Hant": "Magnet 使用條款", "es": "Magnet Términos de uso"},
 }
@@ -80,7 +82,7 @@ def buttons():
 def page(name):
     parts = []
     for c, _ in LANGS:
-        frag = open(os.path.join(HERE, f"{name}.{c}.html"), encoding="utf-8").read().strip()
+        frag = open(os.path.join(HERE, f"{name}.{c}.html"), encoding="utf-8").read().strip().replace("__EMAIL__", EMAIL)
         parts.append(f'<main data-lang="{c}" lang="{c}">\n{frag}\n</main>\n')
     html = HEAD.format(title=" / ".join(TITLE[name][c] for c, _ in LANGS[:2]), buttons=buttons()) + "".join(parts) \
         + TAIL % repr([c for c, _ in LANGS]).replace("'", '"')
@@ -112,5 +114,6 @@ def index():
 if __name__ == "__main__":
     page("privacy")
     page("terms")
+    page("delete")
     index()
     print("ok")
